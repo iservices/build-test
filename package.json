@@ -11,6 +11,10 @@
   ],
   "author": "natewallace@gmail.com",
   "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iservices/build-test.git"
+  },
   "dependencies": {
     "del": "^2.2.0",
     "gulp": "^3.9.0",
