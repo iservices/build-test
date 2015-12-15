@@ -62,6 +62,6 @@ module.exports = (opts) => {
     return gulp.src(input.testGlob)
       .pipe(mocha())
       .pipe(istanbul.writeReports({ dir: input.outputDir }))
-      .pipe(istanbul.enforceThresholds(input.thresholds));
+      .pipe(istanbul.enforceThresholds({ thresholds: input.thresholds }));
   });
 };
