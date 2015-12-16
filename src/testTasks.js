@@ -20,7 +20,7 @@ const del = require('del');
  * @param {string} opts.outputDir - The directory that unit tests and code coverage tasks can output to.
  * @returns {function} - Function that registers tasks.
  */
-module.exports = (opts) => {
+module.exports = function (opts) {
   const input = {
     testGlob: opts.testGlob,
     codeGlob: opts.codeGlob,
@@ -37,7 +37,7 @@ module.exports = (opts) => {
   /**
    * Run unit tests without code coverage.
    */
-  gulp.task(input.tasksPrefix + 'testWithoutCoverage', function testWithoutCoverageTask() {
+  gulp.task(input.tasksPrefix + 'test-without-coverage', function () {
     return gulp.src(input.testGlob, { read: false })
       .pipe(mocha());
   });
@@ -45,7 +45,7 @@ module.exports = (opts) => {
   /**
    * Setup for test coverage.
    */
-  gulp.task(input.tasksPrefix + 'preTestCoverage', function preTestCoverageTask() {
+  gulp.task(input.tasksPrefix + 'pre-test-coverage', function () {
     del.sync(input.outputDir);
 
     return gulp.src(input.codeGlob)
@@ -58,7 +58,7 @@ module.exports = (opts) => {
   /**
    * Run unit tests with code coverage.
    */
-  gulp.task(input.tasksPrefix + 'testWithCoverage', ['preTestCoverage'], function testWithCoverageTask() {
+  gulp.task(input.tasksPrefix + 'test-with-coverage', ['pre-test-coverage'], function () {
     return gulp.src(input.testGlob)
       .pipe(mocha())
       .pipe(istanbul.writeReports({ dir: input.outputDir }))
