@@ -17,7 +17,7 @@ Within this file you will register the gulp tasks that are defined within this p
 of this.
 
 ```
-'strict';
+'use strict';
 
 const test = require('build-test');
 
