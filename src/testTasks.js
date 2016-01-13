@@ -18,6 +18,8 @@ const del = require('del');
  * @param {string|string[]} opts.codeGlob - Globs that identify code for code coverage.
  * @param {object} opts.thresholds - Thresholds passed to the code coverage tasks.
  * @param {string} opts.outputDir - The directory that unit tests and code coverage tasks can output to.
+ * @param {string} [opts.tasksPrefix] - Optional prefix to apply to task names.
+ * @param {string[]} [opts.tasksDependencies] - Optional array of tasks names that must be completed before these registered tasks runs.
  * @returns {function} - Function that registers tasks.
  */
 module.exports = function (opts) {
@@ -25,7 +27,8 @@ module.exports = function (opts) {
     testGlob: opts.testGlob,
     codeGlob: opts.codeGlob,
     thresholds: opts.thresholds,
-    outputDir: opts.outputDir
+    outputDir: opts.outputDir,
+    tasksDependencies: opts.tasksDependencies || []
   };
 
   if (opts.tasksPrefix) {
@@ -34,18 +37,18 @@ module.exports = function (opts) {
     input.tasksPrefix = '';
   }
 
-  /**
+  /*
    * Run unit tests without code coverage.
    */
-  gulp.task(input.tasksPrefix + 'test-without-coverage', function () {
+  gulp.task(input.tasksPrefix + 'test-without-coverage', input.tasksDependencies, function () {
     return gulp.src(input.testGlob, { read: false })
       .pipe(mocha());
   });
 
-  /**
+  /*
    * Setup for test coverage.
    */
-  gulp.task(input.tasksPrefix + 'pre-test-coverage', function () {
+  gulp.task(input.tasksPrefix + 'pre-test-coverage', input.tasksDependencies, function () {
     del.sync(input.outputDir);
 
     return gulp.src(input.codeGlob)
@@ -55,7 +58,7 @@ module.exports = function (opts) {
       .pipe(istanbul.hookRequire());
   });
 
-  /**
+  /*
    * Run unit tests with code coverage.
    */
   gulp.task(input.tasksPrefix + 'test-with-coverage', ['pre-test-coverage'], function () {
