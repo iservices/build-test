@@ -18,6 +18,7 @@ const del = require('del');
  * @param {string|string[]} opts.codeGlob - Globs that identify code for code coverage.
  * @param {object} opts.thresholds - Thresholds passed to the code coverage tasks.
  * @param {string} opts.outputDir - The directory that unit tests and code coverage tasks can output to.
+ * @param {string | string[]} [opts.require] - Optional list of modules to require before running tests.
  * @param {string} [opts.tasksPrefix] - Optional prefix to apply to task names.
  * @param {string[]} [opts.tasksDependencies] - Optional array of tasks names that must be completed before these registered tasks runs.
  * @returns {function} - Function that registers tasks.
@@ -37,12 +38,18 @@ module.exports = function (opts) {
     input.tasksPrefix = '';
   }
 
+  if (opts.require) {
+    input.require = Array.isArray(opts.require) ? opts.require : [opts.require];
+  } else {
+    input.require = [];
+  }
+
   /*
    * Run unit tests without code coverage.
    */
   gulp.task(input.tasksPrefix + 'test-without-coverage', input.tasksDependencies, function () {
     return gulp.src(input.testGlob, { read: false })
-      .pipe(mocha());
+      .pipe(mocha({ require: input.require }));
   });
 
   /*
@@ -63,7 +70,7 @@ module.exports = function (opts) {
    */
   gulp.task(input.tasksPrefix + 'test-with-coverage', ['pre-test-coverage'], function () {
     return gulp.src(input.testGlob)
-      .pipe(mocha())
+      .pipe(mocha({ require: input.require }))
       .pipe(istanbul.writeReports({ dir: input.outputDir }))
       .pipe(istanbul.enforceThresholds({ thresholds: input.thresholds }));
   });
