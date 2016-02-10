@@ -9,6 +9,8 @@ const gulp = require('gulp');
 const mocha = require('gulp-mocha');
 const istanbul = require('gulp-istanbul');
 const del = require('del');
+const path = require('path');
+const htmlReporter = require('./htmlReporter');
 
 /**
  * Function that registers testing and code coverage tasks.
@@ -48,8 +50,14 @@ module.exports = function (opts) {
    * Run unit tests without code coverage.
    */
   gulp.task(input.tasksPrefix + 'test-without-coverage', input.tasksDependencies, function () {
+    del.sync(input.outputDir);
+
     return gulp.src(input.testGlob, { read: false })
-      .pipe(mocha({ require: input.require }));
+      .pipe(mocha({
+        require: input.require,
+        reporter: htmlReporter,
+        reporterOptions: path.normalize(input.outputDir + '/test-report/index.html')
+      }));
   });
 
   /*
@@ -70,7 +78,11 @@ module.exports = function (opts) {
    */
   gulp.task(input.tasksPrefix + 'test-with-coverage', ['pre-test-coverage'], function () {
     return gulp.src(input.testGlob)
-      .pipe(mocha({ require: input.require }))
+      .pipe(mocha({
+        require: input.require,
+        reporter: htmlReporter,
+        reporterOptions: path.normalize(input.outputDir + '/test-report/index.html')
+      }))
       .pipe(istanbul.writeReports({ dir: input.outputDir }))
       .pipe(istanbul.enforceThresholds({ thresholds: input.thresholds }));
   });
