@@ -1,6 +1,6 @@
 {
   "name": "build-test",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Build tasks for testing.",
   "main": "src/index.js",
   "scripts": {
