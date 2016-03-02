@@ -76,7 +76,7 @@ module.exports = function (opts) {
   /*
    * Run unit tests with code coverage.
    */
-  gulp.task(input.tasksPrefix + 'test-with-coverage', ['pre-test-coverage'], function () {
+  gulp.task(input.tasksPrefix + 'test-with-coverage', [input.tasksPrefix + 'pre-test-coverage'], function () {
     return gulp.src(input.testGlob)
       .pipe(mocha({
         require: input.require,
