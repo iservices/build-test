@@ -3,8 +3,6 @@
 This package is currently in **BETA**
 
 ## Overview
-This is a node package that defines gulp tasks that can be used to perform testing and code coverage.
-It uses the [mocha](https://www.npmjs.com/package/mocha) and [istanbul](https://www.npmjs.com/package/istanbul) packages for unit testing and code coverage respectively.
 
 This is a command line tool that performs testing and code coverage.
 It uses [mocha](https://www.npmjs.com/package/mocha) to perform testing and [istanbul](https://www.npmjs.com/package/istanbul) to perform
