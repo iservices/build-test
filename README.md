@@ -52,7 +52,6 @@ Options:
 | -o     | The directory to send output to.  This defaults to testResults/. |
 | -r     | A modue to require before any tests are run. |
 | -w     | When present the files specified in the files glob pattern(s) will be watched for changes and tested when they do change. |
-| -W     | This is the same as the -w command except that the specified files will be tested before the watch begins. |
 | --branches    | Global branch coverage threshold when code coverage is performed. |
 | --functions   | Global function coverage threshold when code coverage is performed. |
 | --lines       | Global line coverage threshold when code coverage is performed. |

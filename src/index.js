@@ -114,7 +114,7 @@ function checkCoverage(args) {
  * @return {void}
  */
 function mochaWatch(args) {
-  if (args.W || args.w) {
+  if (args.w) {
     const watcher = chokidar.watch(args._, {
       ignored: /[\/\\]\./,
       persistent: true
@@ -141,18 +141,17 @@ if (!argsv._.length) {
   console.log('-o\t The directory to send output to.  This defaults to testResults/.');
   console.log('-r\t A modue to require before any tests are run.');
   console.log('-w\t When present the files specified in the -g glob pattern(s) will be watched for changes and tested when they do change.');
-  console.log('-W\t This is the same as the -w command except that the specified files will be tested before the watch begins.');
   console.log('--branches\t Global branch coverage threshold when code coverage is performed.');
   console.log('--functions\t Global function coverage threshold when code coverage is performed.');
   console.log('--lines\t\t Global line coverage threshold when code coverage is performed.');
   console.log('--statements\t Global statement coverage threshold when code coverage is performed.');
   process.exitCode = 1;
-} else if (argsv.W || !argsv.w) {
+} else {
   //
   // test files specified and begin optional watch
   //
-  globby(argsv._).then(paths => {
-    mocha(paths, argsv)
+  globby(argsv._).then(files => {
+    mocha(files, argsv)
       .on('exit', code => {
         const check = (code === 0) ? checkCoverage(argsv) : null;
         if (check) {
@@ -161,14 +160,9 @@ if (!argsv._.length) {
             mochaWatch(argsv);
           });
         } else {
-          mochaWatch(argsv);
           process.exitCode = code;
+          mochaWatch(argsv);
         }
       });
   });
-} else if (argsv.w) {
-  //
-  // watch for file changes
-  //
-  mochaWatch(argsv);
 }
