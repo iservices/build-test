@@ -19,6 +19,9 @@ const argsv = require('minimist')(process.argv.slice(2));
  * @return {ChildProcess} The child process that does the testing.
  */
 function mocha(files, args, forceMocha) {
+  if (!files.length) {
+    return;
+  }
   const input = files.map(file => file);
 
   // require module option
