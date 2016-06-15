@@ -21,8 +21,8 @@ do this within an npm script element.  Take the following excerpt from an exampl
 ```JSON
 {
   "scripts": {
-    "test": "build-test -g \"src/tests/*.spec.js\" -c \"src/**/*.js\" -c \"src/tests/**/*.js\" ",
-    "test-watch": "build-test -g \"src/tests/*.spec.js\" -c \"src/**/*.js\" -c \"src/tests/**/*.js\" -w",
+    "test": "build-test \"src/tests/*.spec.js\" -c \"src/**/*.js\" -c \"!src/tests/**/*.js\" ",
+    "test-watch": "build-test \"src/tests/*.spec.js\" -c \"src/**/*.js\" -c \"!src/tests/**/*.js\" -w",
   }
 }
 ```
@@ -38,7 +38,7 @@ the glob patterns into actual file paths.
 
 Usage:
 ```
-build-test -g <glob pattern> [-g <glob pattern>] [-c <glob pattern>]  
+build-test <files> [<files>] [-c <files>]  
            [-o <out directory>] [-w] [-f <format>] [-r <module>]  
            [--branches <number>] [--functions <number>] [--lines <number>] [--statements <number>]
 ```
@@ -46,12 +46,12 @@ Options:
 
 | Option | Description |
 | ---    | ---         |
+| `<files>` | A glob pattern that identifies files that contain unit tests.  Multiple glob patterns can be specified. |
 | -c     | A glob pattern that identifies files to produce code coverage metrics for. Multiple glob patterns can be specified. |
 | -f     | The format for the output.  Options are: console, file. |
-| -g     | A glob pattern that identifies files that contain unit tests.  Multiple glob patterns can be specified. |
 | -o     | The directory to send output to.  This defaults to testResults/. |
 | -r     | A modue to require before any tests are run. |
-| -w     | When present the files specified in the -g glob pattern(s) will be watched for changes and tested when they do change. |
+| -w     | When present the files specified in the files glob pattern(s) will be watched for changes and tested when they do change. |
 | -W     | This is the same as the -w command except that the specified files will be tested before the watch begins. |
 | --branches    | Global branch coverage threshold when code coverage is performed. |
 | --functions   | Global function coverage threshold when code coverage is performed. |

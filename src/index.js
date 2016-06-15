@@ -115,7 +115,7 @@ function checkCoverage(args) {
  */
 function mochaWatch(args) {
   if (args.W || args.w) {
-    const watcher = chokidar.watch(args.g, {
+    const watcher = chokidar.watch(args._, {
       ignored: /[\/\\]\./,
       persistent: true
     });
@@ -126,18 +126,18 @@ function mochaWatch(args) {
   }
 }
 
-if (!argsv.g) {
+if (!argsv._.length) {
   //
   // print help info if args are missing
   //
-  console.log('Usage: build-test -g <glob pattern> [-g <glob pattern>] [-c <glob pattern>]');
+  console.log('Usage: build-test <files> [<files>] [-c <files>]');
   console.log('                  [-o <out directory>] [-w] [-f <format>] [-r <module>]');
   console.log('                  [--branches <number>] [--functions <number>] [--lines <number>] [--statements <number>]');
   console.log('');
   console.log('Options:');
+  console.log('<files>\t A glob pattern that identifies files that contain unit tests.  Multiple glob patterns can be specified.');
   console.log('-c\t A glob pattern that identifies files to produce code coverage metrics for. Multiple glob patterns can be specified.');
   console.log('-f\t The format for the output.  Options are [console, file]');
-  console.log('-g\t A glob pattern that identifies files that contain unit tests.  Multiple glob patterns can be specified.');
   console.log('-o\t The directory to send output to.  This defaults to testResults/.');
   console.log('-r\t A modue to require before any tests are run.');
   console.log('-w\t When present the files specified in the -g glob pattern(s) will be watched for changes and tested when they do change.');
@@ -151,7 +151,7 @@ if (!argsv.g) {
   //
   // test files specified and begin optional watch
   //
-  globby(argsv.g).then(paths => {
+  globby(argsv._).then(paths => {
     mocha(paths, argsv)
       .on('exit', code => {
         const check = (code === 0) ? checkCoverage(argsv) : null;
