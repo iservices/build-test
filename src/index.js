@@ -20,7 +20,7 @@ const argsv = require('minimist')(process.argv.slice(2));
  */
 function mocha(files, args, forceMocha) {
   if (!files.length) {
-    return;
+    return null;
   }
   const input = files.map(file => file);
 
@@ -149,23 +149,28 @@ if (!argsv._.length) {
   console.log('--lines\t\t Global line coverage threshold when code coverage is performed.');
   console.log('--statements\t Global statement coverage threshold when code coverage is performed.');
   process.exitCode = 1;
+} else if (argsv.w) {
+  //
+  // watch for changes to files
+  //
+  mochaWatch(argsv);
 } else {
   //
-  // test files specified and begin optional watch
+  // test files specified
   //
   globby(argsv._).then(files => {
-    mocha(files, argsv)
-      .on('exit', code => {
-        const check = (code === 0) ? checkCoverage(argsv) : null;
-        if (check) {
-          check.on('exit', checkCode => {
-            process.exitCode = checkCode;
-            mochaWatch(argsv);
-          });
-        } else {
-          process.exitCode = code;
-          mochaWatch(argsv);
-        }
-      });
+    if (files.length) {
+      mocha(files, argsv)
+        .on('exit', code => {
+          const check = (code === 0) ? checkCoverage(argsv) : null;
+          if (check) {
+            check.on('exit', checkCode => {
+              process.exitCode = checkCode;
+            });
+          } else {
+            process.exitCode = code;
+          }
+        });
+    }
   });
 }
