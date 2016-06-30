@@ -4,7 +4,7 @@
 
 const globby = require('globby');
 const chokidar = require('chokidar');
-const cp = require('child_process');
+const spawn = require('cross-spawn');
 const path = require('path');
 const argsv = require('minimist')(process.argv.slice(2));
 
