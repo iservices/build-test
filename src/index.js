@@ -74,7 +74,7 @@ function mocha(files, args, forceMocha) {
   }
 
   // execute
-  return cp.spawn(command, input, { stdio: 'inherit' });
+  return spawn(command, input, { stdio: 'inherit' });
 }
 
 /**
