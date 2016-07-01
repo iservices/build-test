@@ -43,7 +43,7 @@ function mocha(files, args, forceMocha) {
   if (args.c && !forceMocha) {
     command = 'istanbul';
     input.unshift('--');
-    input.unshift('_mocha');
+    input.unshift('node_modules/mocha/bin/_mocha');
     input.unshift(args.o ? path.join(args.o, 'coverage/') : './testResults/coverage/');
     input.unshift('--dir');
     input.unshift('--include-all-sources');
