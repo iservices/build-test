@@ -106,7 +106,7 @@ function checkCoverage(args) {
     input.push('--statements');
     input.push(args.statements);
   }
-  return cp.spawn('istanbul', input, { stdio: 'inherit' });
+  return spawn('istanbul', input, { stdio: 'inherit' });
 }
 
 /**
