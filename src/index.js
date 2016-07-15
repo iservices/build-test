@@ -43,12 +43,12 @@ function mocha(files, args, forceMocha) {
   if (args.c && !forceMocha) {
     command = 'istanbul';
     input.unshift('--');
-    input.unshift('node_modules/mocha/bin/_mocha');
+    input.unshift(process.platform === 'win32' ? 'node_modules/mocha/bind/_mocha' : '_mocha');
     input.unshift(args.o ? path.join(args.o, 'coverage/') : './testResults/coverage/');
     input.unshift('--dir');
     input.unshift('--include-all-sources');
     if (args.f === 'file') {
-      input.unshift('html');
+      input.unshift('cobertura');
       input.unshift('--report');
       input.unshift('none');
       input.unshift('--print');
