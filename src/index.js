@@ -50,6 +50,8 @@ function mocha(files, args, forceMocha) {
     if (args.f === 'file') {
       input.unshift('cobertura');
       input.unshift('--report');
+      input.unshift('html');
+      input.unshift('--report');
       input.unshift('none');
       input.unshift('--print');
     } else {
